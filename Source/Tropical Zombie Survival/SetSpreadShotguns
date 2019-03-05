@@ -7,6 +7,8 @@
  * wrote everything here
  */
 
+
+--given a set of rules, build a set spread pattern
 local function GenerateShotgunPattern(spurs, rings, twist, rot, doAddCenter)
 	--[[
 	spurs: the amount of bullets per ring, or a table of 0-360 angles for where
