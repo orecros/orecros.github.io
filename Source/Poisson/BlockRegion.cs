@@ -1,7 +1,7 @@
 /*
  * Andrew Tollett, 2018
  * This is some example code I ripped out of an old project of mine.
- * I, obviously I guess, did not write the poisson disc sampling algorithm.
+ * I did not write the poisson disc sampling algorithm.
  * I did put it into C# though, and the rest of the code was created by me.
  */
 
