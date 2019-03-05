@@ -1,0 +1,168 @@
+/*
+ * Andrew Tollett, 2019
+ * This is some compiled snippets of code from my Zombie Survival overhaul.
+ * This is my addition of set bullet patterns for shotguns.
+ *
+ * I'll note which sections are JetBoom's original code, but otherwise I
+ * wrote everything here
+ */
+
+local function GenerateShotgunPattern(spurs, rings, twist, rot, doAddCenter)
+	--[[
+	spurs: the amount of bullets per ring, or a table of 0-360 angles for where
+		the spurs should be
+	rings: the amount of rings of bullets (evenly spaced), or a table of 0-1
+		fractions for where	in the spread the rings should be
+	twist: a fraction from 0-1 for how far each new ring should be rotated,
+		where 0 is not rotated, 0.5 is staggered in windows, and 1 shows no change
+		or, if spurs is a set of angles, a 0-360 angle for how far the spurs
+		should rotate for each ring
+	rot: a 0-360 angle for how far the entire pattern should be rotated
+	doAddCenter: a bool for whether or not to put a bullet at {0,0}
+
+	returns: a table of {rotation,distance} tables for where a bullet should go
+	]]
+
+
+	--create the table for the bullet pattern to be stored in
+	local tab = {}
+
+	--if we got a number input for spurs,
+	--turn it into a table of evenly spaced spurs
+	--and also convert twist from nice form to ugly form
+	if isnumber(spurs) then
+		local count = spurs
+		spurs = {}
+		for s = 1, count do
+			spurs[s] = 360 / count * (s + rot)
+		end
+
+		twist = 360 / count * twist
+	end
+
+	--if we got a number input for rings,
+	--turn it into a table of evenly spaced rings
+	if isnumber(rings) then
+		local count = rings
+		rings = {}
+		for s = 1, count do
+			rings[s] = 1 / count * s
+		end
+	end
+
+	--add a bullet in the perfect center
+	if doAddCenter then
+		tab[1] = {0,0}
+	end
+
+	--generate the actual pattern
+	for s, spur in ipairs(spurs) do
+		for r, ring in ipairs(rings) do
+			tab[#tab + 1] = {ring, spur + twist * r}
+		end
+	end
+
+	return tab
+end
+
+--generate a shotgun pattern (polar coordinates) from a given table of Pitch/Yaw
+--coordinates (cartesian)
+local function ConvertShotgunPatternXY(points)
+	local x, y
+	for _, point in ipairs(points) do
+		x = point[1]
+		y = point[2]
+
+		point[1] = math.sqrt(x*x + y*y)
+		point[2] = math.deg(math.atan2(y,x))
+	end
+
+	return points
+end
+
+
+/*
+ * Lua doesn't have enumerated types, so they are written like this
+ * the patterns use negative numbers so they can be inputted into the same place
+ * as a regular amount of bullets for a random spray pattern. if the number is
+ * negative, it must be a set pattern.
+ */
+BULLETPATTERNS = {}
+
+BULLETPATTERN_SHOTGUN = -1
+BULLETPATTERNS[BULLETPATTERN_SHOTGUN] = GenerateShotgunPattern(6,{0.55,1},0.5,0, true)
+
+BULLETPATTERN_CROSS = -2
+BULLETPATTERNS[BULLETPATTERN_CROSS] = GenerateShotgunPattern(3,{1},0,0.75, false)
+
+BULLETPATTERN_DUCKBILL = -3
+BULLETPATTERNS[BULLETPATTERN_DUCKBILL] = GenerateShotgunPattern({190,350},8,0,0,true)
+
+BULLETPATTERN_TALL = -4
+BULLETPATTERNS[BULLETPATTERN_TALL] = ConvertShotgunPatternXY({
+	{0,0.5},
+	{-0.2,0.2},
+	{0.2,0.2},
+	{-0.5,0},
+	{0.5,0},
+	{0,-0.2},
+	{0,-0.6},
+	{0,-1}
+})
+
+--most of this is written by JetBoom, so I've torn out some in between bits
+--this is really optimized code because it happens many times a second, with
+--a shotgun it can happen many times in a single frame.
+--that aren't relevant to the spray patterns
+function meta:FireBulletsLua(src, dir, spread, num, damage, attacker, force_mul, tracer, callback, hull_size, hit_own_team, max_distance, filter, inflictor)
+	//initial setup
+
+	if num > 0 then -- random pattern
+		--JetBoom wrote this bit here
+		--fire bullets in a (networked) random pattern
+		for i=1, num do
+			if temp_has_spread then
+				temp_angle:Set(base_ang)
+				temp_angle:RotateAroundAxis(
+					temp_angle:Forward(),
+					inflictor_weapon and util_SharedRandom("bulletrotate" .. i, 0, 360) or math.Rand(0, 360)
+				)
+				temp_angle:RotateAroundAxis(
+					temp_angle:Up(),
+					inflictor_weapon and util_SharedRandom("bulletangle" .. i, -spread, spread) or math.Rand(-spread, spread)
+				)
+
+				temp_dirs[i] = temp_angle:Forward()
+			end
+		end
+	else -- set pattern weapons
+		--I wrote this bit here
+		--fire bullets in this set pattern
+		for i=1, #BULLETPATTERNS[num] do
+			--base_ang is the direction the player's gun barrel is pointing
+			temp_angle:Set(base_ang)
+			--first, apply roll to the angle according to the rotation of the shot
+			temp_angle:RotateAroundAxis(
+				temp_angle:Forward(),
+				BULLETPATTERNS[num][i][2]
+			)
+			--then, apply yaw to the angle according to the spread of the shot
+			temp_angle:RotateAroundAxis(
+				temp_angle:Up(),
+				BULLETPATTERNS[num][i][1] * spread
+			)
+
+			--finally, convert the angle to a vector
+			temp_dirs[i] = temp_angle:Forward()
+		end
+
+		--replace num with the real amount of bullets
+		num = #BULLETPATTERNS[num]
+	end
+
+	for i=1, num do
+		dir = temp_dirs[i]
+
+		--Fire the bullet. JetBoom wrote all of it.
+	end
+end
