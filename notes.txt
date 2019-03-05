@@ -1,0 +1,43 @@
+------------------------------Section 1-----------------------------------------
+
+Hey. I'm Andrew Tollett, a game programmer. I'm currently finishing up my
+bachelor's in Computer Science at The University of Texas at Dallas, to graduate
+December 2019.
+
+I have proven experience working with C# and Lua, and using Unity and GameMaker,
+but learning another language or tool is very natural for me. While I find
+systems programming is most interesting, I have a little experience working on
+almost every part of a game.
+
+------------------------------Section 2-----------------------------------------
+
+Infinite 3D platformer - unity C#
+
+procedurally generated level layouts
+-pulling room shapes out of a table
+
+-----linked poisson-disc-sampling-----
+
+
+------------------------------Section 3-----------------------------------------
+
+Tropical Zombie Survival - Garry's Mod LUA
+
+-fork of popular Garry's Mod gamemode - survive against 6 waves of AI and human
+ controlled zombies to survive and win. Upgrade your equipment as you fight the
+ undead.
+-most key gameplay components of the game modified to combine the run-and-gun
+ action of the old 2011 version with some of the more modern developments of
+ recent patches
+-Lead a team of 3 through 2 2-month development cycles. 1 more planned cycle,
+ to be completed january 2018
+
+------------------------------Section 4-----------------------------------------
+
+Halloween Run - Game Design Document
+
+put the intro in-line
+
+------------------------------Section 5-----------------------------------------
+
+Tile Snake - Ludum Dare entry - Game Maker
