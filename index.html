@@ -239,38 +239,32 @@
   <p style="clear: both; margin-bottom: 32px;"></p>
 </div>
 <div class="section">
-  <h1>Tropical Zombie Survival - Garry's Mod Lua
+  <h1>Custom UI for garry'smod gamemode - Lua
     <a href="https://github.com/orecros/orecros.github.io/tree/master/Source/Tropical%20Zombie%20Survival">[Sample Source]</a>
   </h1>
-  <div class="picture-row">
-    <div class="picture-column">
-      <img src="tzs_upgrades.jpg" width="100%">
-    </div>
-    <div class="picture-column">
-      <img src="tzs_classes.jpg" width="100%">
-    </div>
-    <div class="picture-column">
-      <img src="tzs_perks.jpg" width="100%">
-    </div>
-    <div class="picture-column">
-      <img src="tzs_shop.jpg" width="100%">
-    </div>
+  <div align = "left">
+    <iframe src="https://giphy.com/embed/daUB1BiFrqehmTs4Zr" width="480" height="270" frameBorder="0" class="giphy-embed"></iframe>
+    <iframe src="https://giphy.com/embed/jrhPcj9W9P61Cko4tZ" width="480" height="268" frameBorder="0" class="giphy-embed"></iframe>
+    <iframe src="https://giphy.com/embed/XevNTFljwX1lD4XZTB" width="480" height="262" frameBorder="0" class="giphy-embed"></iframe>
+    <iframe src="https://giphy.com/embed/XbgPiGr5bwsl5Nffop" width="480" height="396" frameBorder="0" class="giphy-embed"></iframe>
   </div>
-  <img src="tzs1.jpg" align="left" height="512px">
   <p>
     <strong>This is a fork</strong> of a popular, decade old garry's mod gamemode
-    called Zombie Survival. I lead a team of 3 through 2 2-month development
-    cycles, with 1 more planned cycle to be completed summer 2019. <br></br>
+    called Zombie Survival. I lead a team of 3 through a large set of changes
+    from the base game over the course of 4 months. <br></br>
 
-    In Broad Strokes, classic zombie survival was about utilizing scarce
-    resources to survive 6 waves against the undead, mostly through running,
-    hiding, barricading, and killing. Modern zombie survival has become bloated
-    with legacy features to the point of it almost being unrecognizeable, with
-    a heavier focus on team tactics and barricading.<br></br>
+    These UI elements were created by me using Derma, a UI extension of Lua exclusively
+    for use with garry's mod. For each UI element, I use Derma to define a new object
+    known as a panel. I populate these panels with information stored in
+    lua tables that I generate from each type of zombie class, weapon type, perk,
+    etc that exists within the game. While most files are stored within the asset
+    package players must download when they first connect to the server, some are
+    downloaded lazily from where they are hosted on github using html requests.
+    users can define loadouts for use with the perk system which are saved clientside. <br></br>
 
-    Most key components of the game have been modified to combine the run-and-gun
-    action of the old 2011-era Zombie Survival with some of the more modern
-    developments of recent patches. <br></br>
+    While this section mostly showcases the UI, Most key components of the game
+    have been modified to combine the feel of classic versions of the gamemode with
+    some of the more modern advancements and optimizations. <br></br>
 
     Some sample Lua source code <a href="https://github.com/orecros/orecros.github.io/tree/master/Source/Tropical%20Zombie%20Survival">is available here</a><br>
     A more complete description of our changes <a href="TZS.html">is available here</a><br>
